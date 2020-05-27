@@ -8,7 +8,6 @@
 `frhd-api` is an easy-to-use module which allows you to request data from FRHD with an object oriented style, written in TypeScript.
 The library caches every fetched structure, so more structures can be present instead of partial data, but this can be disabled.
 
-
 # Documentation
 
 For now, [typings](https://github.com/1s3k3b/frhd-api/tree/master/typings)
@@ -17,7 +16,7 @@ For now, [typings](https://github.com/1s3k3b/frhd-api/tree/master/typings)
 
 Getting profile info:
 ```js
-const FRHD = require('frhd-api');
+const { FRHD } = require('frhd-api');
 const api = new FRHD();
 
 api.fetchProfile('Crypt').then(console.log);
@@ -189,7 +188,7 @@ Profile {
 
 Getting a track via the JSON API:
 ```js
-const FRHD = require('frhd-api');
+const { FRHD } = require('frhd-api');
 const api = new FRHD();
 
 api.fetchTrack('153371').then(console.log);

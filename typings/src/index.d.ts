@@ -3,7 +3,7 @@ import Track from './structures/Track';
 import ScrapedTrack from './structures/ScrapedTrack';
 import TrackPreview from './structures/TrackPreview';
 import LeaderboardEntry from './structures/LeaderboardEntry';
-export default class FRHD {
+export declare class FRHD {
     profiles?: Map<string, Profile>;
     scrapedTracks?: Map<string, ScrapedTrack>;
     tracks?: Map<string, Track>;

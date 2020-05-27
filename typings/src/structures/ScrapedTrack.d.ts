@@ -1,4 +1,4 @@
-import FRHD from '..';
+import { FRHD } from '..';
 import Profile from './Profile';
 import Comment from './Comment';
 export default class ScrapedTrack {

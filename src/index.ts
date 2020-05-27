@@ -8,7 +8,7 @@ import TrackPreview from './structures/TrackPreview';
 import LeaderboardEntry from './structures/LeaderboardEntry';
 import { FRHDAPIError, ArgumentError } from './errors';
 
-export default class FRHD {
+export class FRHD {
     public profiles?: Map<string, Profile>;
     public scrapedTracks?: Map<string, ScrapedTrack>;
     public tracks?: Map<string, Track>;

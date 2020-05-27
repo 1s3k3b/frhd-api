@@ -1,4 +1,4 @@
-import FRHD from '../src/';
+import { FRHD } from '../src/';
 const api = new FRHD();
 
 api.fetchProfile('Crypt').then(console.log);

@@ -1,5 +1,5 @@
 /// <reference types="cheerio" />
-import FRHD from '..';
+import { FRHD } from '..';
 import Profile from './Profile';
 export default class TrackPreview {
     private _api;

@@ -1,5 +1,5 @@
 import $ from 'cheerio';
-import FRHD from '..';
+import { FRHD } from '..';
 import Profile from './Profile';
 import Comment from './Comment';
 
