@@ -29,7 +29,7 @@ export default class TrackPreview {
         this.url = d.children[1].attribs.href;
     }
     public scrape() {
-        return this._api.scrapeTrack(this.url, this.author);
+        return this.author ? this._api.scrapeTrack(this.url, this.author) : this._api.scrapeTrack(this.url);
     }
     public fetch(raw = false) {
         return this._api.fetchTrack(this.url, { author: this.author!, raw });
