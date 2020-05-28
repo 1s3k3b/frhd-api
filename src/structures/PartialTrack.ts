@@ -12,7 +12,7 @@ export default class PartialTrack {
     public authorUsername: string;
     public author?: Profile;
     constructor(api: FRHD, d: CheerioElement) {
-        Object.defineProperty(this, 'api', { value: api });
+        Object.defineProperty(this, '_api', { value: api });
         const children = d.children[1].children.filter(c => c.type === 'tag');
         const time = children[0].children[5].children[0].data!.trim();
         const timeKey = /AUTO/i.test(time) ? 'auto' : /HOLDUP/i.test(time) ? 'holdup' : null;

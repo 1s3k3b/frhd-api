@@ -16,7 +16,7 @@ export default class Track {
     public authorIsUser: boolean;
     public powerups: { [key in 'star' | 'checkpoint' | 'boost' | 'gravity' | 'slowmo' | 'bomb' | 'heli']: number };
     constructor(api: FRHD, data: { [key: string]: any }, author?: Profile) {
-        Object.defineProperty(this, 'api', { value: api });
+        Object.defineProperty(this, '_api', { value: api });
         this.id = data.id;
         this.title = data.title;
         this.description = data.descr;

@@ -12,7 +12,7 @@ export default class TrackPreview {
     public url: string;
     public preview: string;
     constructor(api: FRHD, d: CheerioElement) {
-        Object.defineProperty(this, 'api', { value: api });
+        Object.defineProperty(this, '_api', { value: api });
         if (d.children[1].children[5]) {
             const time = d.children[1].children[5].children[0].data!.trim();
             const timeKey = /AUTO/i.test(time) ? 'auto' : /HOLDUP/i.test(time) ? 'holdup' : null;
