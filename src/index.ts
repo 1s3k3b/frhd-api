@@ -16,6 +16,8 @@ export class FRHD {
     public featured?: TrackPreview[][];
     public leaderboard?: Map<'player' | 'author', LeaderboardEntry[][]>;
     public searches?: Map<string, TrackPreview[]>;
+    public hot?: TrackPreview[];
+    public new?: TrackPreview[][];
     constructor(cache = true) {
         if (cache) {
             this.profiles = new Map();
@@ -25,6 +27,7 @@ export class FRHD {
             this.featured = [];
             this.leaderboard = new Map([['player', []], ['author', []]]);
             this.searches = new Map();
+            this.new = [];
         }
     }
     public async fetchProfile(username: string) {
@@ -68,7 +71,7 @@ export class FRHD {
 
         const r = await fetch(`https://www.freeriderhd.com/trending/${page}`, {});
         if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
-        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d));
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
         if (this.trending) this.trending[page] = data;
         return data;
     }
@@ -78,8 +81,27 @@ export class FRHD {
 
         const r = await fetch(`https://www.freeriderhd.com/featured/${page}`, {});
         if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
-        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d));
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
         if (this.featured) this.featured[page] = data;
+        return data;
+    }
+    public async fetchHot() {
+        if (this.hot) return this.hot;
+
+        const r = await fetch('https://www.freeriderhd.com/hot');
+        if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d));
+        this.hot = data;
+        return data;
+    }
+    public async fetchNew(page = 1) {
+        if (typeof page !== 'number') throw new ArgumentError('INVALID_ARG', 'page', 'number', page);
+        if (this.new?.[page]) return this.new[page];
+
+        const r = await fetch(`https://www.freeriderhd.com/recently-added/${page}`, {});
+        if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
+        if (this.new) this.new[page] = data;
         return data;
     }
     public async fetchLeaderboard(orderBy: 'player' | 'author' = 'player', page = 1) {

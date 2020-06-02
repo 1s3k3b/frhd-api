@@ -8,3 +8,5 @@ api.fetchTrending().then(console.log);
 api.fetchFeatured().then(console.log);
 api.fetchLeaderboard().then(console.log);
 api.search('Shadowland').then(console.log);
+api.fetchNew(2).then(console.log);
+api.fetchHot().then(console.log);

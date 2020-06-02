@@ -11,6 +11,8 @@ export declare class FRHD {
     featured?: TrackPreview[][];
     leaderboard?: Map<'player' | 'author', LeaderboardEntry[][]>;
     searches?: Map<string, TrackPreview[]>;
+    hot?: TrackPreview[];
+    new?: TrackPreview[][];
     constructor(cache?: boolean);
     fetchProfile(username: string): Promise<Profile | undefined>;
     scrapeTrack(name: string, author?: Profile): Promise<ScrapedTrack | undefined>;
@@ -20,6 +22,8 @@ export declare class FRHD {
     }): Promise<any>;
     fetchTrending(page?: number): Promise<TrackPreview[]>;
     fetchFeatured(page?: number): Promise<TrackPreview[]>;
+    fetchHot(): Promise<TrackPreview[]>;
+    fetchNew(page?: number): Promise<TrackPreview[]>;
     fetchLeaderboard(orderBy?: 'player' | 'author', page?: number): Promise<LeaderboardEntry[]>;
     search(query: string): Promise<TrackPreview[] | undefined>;
 }
