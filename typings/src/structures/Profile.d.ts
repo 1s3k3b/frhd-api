@@ -3,6 +3,7 @@ import { FRHD } from '..';
 export default class Profile {
     username: string;
     subscribers: number;
+    description: string | null;
     avatar: string;
     points: number;
     completed: number;

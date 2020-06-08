@@ -5,6 +5,7 @@ import { FRHD } from '..';
 export default class Profile {
     public username: string;
     public subscribers: number;
+    public description: string | null;
     public avatar: string;
     public points: number;
     public completed: number;
@@ -30,7 +31,8 @@ export default class Profile {
         const stats = Array.from(scrape('.stat > .val'), d => d.children[0]);
 
         this.username = scrape('.profile-username > h3')[0].children[0].data!;
-        this.subscribers = parseInt(scrape('#subscribe_to_author_count')[0].children[0].data!);
+        this.subscribers = parseInt(scrape('#subscribe_to_author_count')[0]?.children[0].data || '0');
+        this.description = scrape('.profile-blurb')[0]?.children[0].data || null;
         this.avatar = scrape('.profile-image > img')[0].attribs.src;
         this.points = parseInt(stats[0].data!);
         this.completed = parseInt(stats[1].data!);
@@ -45,6 +47,7 @@ export default class Profile {
         };
         this.tracks = scrape('#created_tracks > .left-menu-only-full-listing > .track-list')[0]
             .children.filter(d => d.name === 'li')
+            .filter(d => d.children[1])
             .map(d => parseTrack(d));
         this.history = scrape('#profile_recently_played > .left-menu-only-full-listing > .track-list')[0]
             .children.filter(d => d.name === 'li')
