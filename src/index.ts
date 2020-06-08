@@ -90,7 +90,7 @@ export class FRHD {
 
         const r = await fetch('https://www.freeriderhd.com/hot');
         if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
-        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d));
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
         this.hot = data;
         return data;
     }
