@@ -18,6 +18,9 @@ export class FRHD {
     public searches?: Map<string, TrackPreview[]>;
     public hot?: TrackPreview[];
     public new?: TrackPreview[][];
+    public biggest?: TrackPreview[][];
+    public highestRated?: TrackPreview[][];
+    public shuffled?: TrackPreview[][];
     constructor(cache = true) {
         if (cache) {
             this.profiles = new Map();
@@ -28,6 +31,9 @@ export class FRHD {
             this.leaderboard = new Map([['player', []], ['author', []]]);
             this.searches = new Map();
             this.new = [];
+            this.biggest = [];
+            this.highestRated = [];
+            this.shuffled = [];
         }
     }
     public async fetchProfile(username: string) {
@@ -102,6 +108,35 @@ export class FRHD {
         if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
         const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
         if (this.new) this.new[page] = data;
+        return data;
+    }
+    public async fetchBiggest(page = 1) {
+        if (typeof page !== 'number') throw new ArgumentError('INVALID_ARG', 'page', 'number', page);
+        if (this.biggest?.[page]) return this.biggest[page];
+
+        const r = await fetch(`https://www.freeriderhd.com/biggest/${page}`, {});
+        if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
+        if (this.biggest) this.biggest[page] = data;
+        return data;
+    }
+    public async fetchHighestRated(page = 1) {
+        if (typeof page !== 'number') throw new ArgumentError('INVALID_ARG', 'page', 'number', page);
+        if (this.highestRated?.[page]) return this.highestRated[page];
+
+        const r = await fetch(`https://www.freeriderhd.com/highest-rated/${page}`, {});
+        if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
+        if (this.highestRated) this.highestRated[page] = data;
+        return data;
+    }
+    public async fetchShuffled(page = 1) {
+        if (typeof page !== 'number') throw new ArgumentError('INVALID_ARG', 'page', 'number', page);
+
+        const r = await fetch(`https://www.freeriderhd.com/shuffled/${page}`, {});
+        if (!r.ok) throw new FRHDAPIError('WENT_WRONG');
+        const data = Array.from($('.track-list > li > div', await r.text()), d => new TrackPreview(this, d)).filter(x => x.preview);
+        this.shuffled?.push(data);
         return data;
     }
     public async fetchLeaderboard(orderBy: 'player' | 'author' = 'player', page = 1) {
