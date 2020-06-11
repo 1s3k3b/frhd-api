@@ -3,12 +3,13 @@ import { FRHD } from '..';
 import Profile from './Profile';
 export default class TrackPreview {
     private _api;
-    time?: string | null;
+    time?: string;
     auto?: boolean;
     holdup?: boolean;
     name?: string;
     authorUsername?: string;
     author?: Profile;
+    featured: boolean;
     url: string;
     preview: string;
     constructor(api: FRHD, d: CheerioElement);
