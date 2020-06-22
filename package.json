@@ -1,6 +1,6 @@
 {
   "name": "frhd-api",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "An FRHD web scraper",
   "main": "./dist/src/index.js",
   "types": "./typings/src/index.d.ts",
