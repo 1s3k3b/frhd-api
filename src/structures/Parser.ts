@@ -96,6 +96,10 @@ export default class Parser {
                     y: y,
                 };
                 if (['B', 'G'].includes(t)) o.deg = this._decodePos(<string>x2degT);
+                if (t === 'W') {
+                    o.x2 = parseInt(<string>x2degT, 32);
+                    o.y2 = y2;
+                }
                 if (t === 'V') {
                     o.vehicleTypeRaw = parseInt(<string>x2degT);
                     o.vehicleType = Vehicles[parseInt(<string>x2degT) - 1];
