@@ -74,7 +74,7 @@ export default class Parser {
                         )
                 ) {
                     // @ts-ignore
-                    if (x) (i ? scenery : physics).push(coords.length ? { type: i, curve: true, coords: [ [x, y], [x2, y2], ...paginate(coords, 2) ] } : { type: i, x, y, x2, y2 });
+                    if (x || x === 0) (i ? scenery : physics).push(coords.length ? { type: i, curve: true, coords: [ [x, y], [x2, y2], ...paginate(coords, 2) ] } : { type: i, x, y, x2, y2 });
                 }
                 continue;
             }
@@ -87,6 +87,7 @@ export default class Parser {
                             .map((y, i) => (i && i !== 3) ? this._decodePos(y) : y)
                     ) as [ keyof typeof powerupTypes, number, number, number | string | undefined, number | undefined ][]
             ) {
+                if (!t) break;
                 const o: Element<2> = {
                     type: 2,
                     powerupTypeRaw: t,
