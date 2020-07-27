@@ -23,12 +23,12 @@ const powerupTypes = {
 };
 interface Element<T extends Types> {
     type: T;
-    x?: number;
-    y?: number;
+    x: number;
+    y: number;
     x2?: number;
     y2?: number;
-    powerupTypeRaw?: keyof typeof powerupTypes;
-    powerupType?: typeof powerupTypes[keyof typeof powerupTypes];
+    powerupTypeRaw: keyof typeof powerupTypes;
+    powerupType: typeof powerupTypes[keyof typeof powerupTypes];
     vehicleTypeRaw?: Vehicles;
     vehicleType?: typeof Vehicles[Vehicles];
     deg?: number;
@@ -53,6 +53,49 @@ export class Parsed {
         public scenery: Element<1>[],
         public powerups: Element<2>[],
     ) {}
+    public move(x: number = 0, y: number = 0) {
+        const mapLine = <T extends 0 | 1>(l: Element<T>) => {
+            if (l.curve) l.coords = l.coords!.map(([dX, dY]) => [x + dX, y + dY]);
+            else {
+                l.x! += x;
+                l.y! += y;
+                l.x2! += x;
+                l.y2! += y;
+            }
+            return l;
+        };
+        return this.parser.toCode({
+            physics: this.physics.map(l => mapLine<0>({ ...l })),
+            scenery: this.scenery.map(l => mapLine<1>({ ...l })),
+            powerups: this.powerups.map(p => {
+                p = { ...p };
+                p.x! += x;
+                p.y! += y;
+                if (p.x2) {
+                    p.x2 += x;
+                    p.y2! += y;
+                }
+                return p;
+            }),
+        });
+    }
+    public merge(x: string): string;
+    public merge(x: Parsed): Parsed;
+    public merge(x: Parsed | string): Parsed | string {
+        if (x instanceof Parsed) {
+            return this.parser.parse(this.parser.toCode({
+                physics: [...this.physics, ...x.physics],
+                scenery: [...this.scenery, ...x.scenery],
+                powerups: [...this.powerups, ...x.powerups],
+            }));
+        }
+        return this.code
+            .split('#')
+            .map((y, i) => `${y},${(z => z ? `${z.endsWith(',') ? z.slice(0, -1) : z}` : '')(x.split('#')[i])}`)
+            .join('#')
+            .replace(/,$/g, '')
+            .replace(/,#/, '#');
+    }
 }
 
 export default class Parser {
