@@ -2,7 +2,7 @@ import { FRHD } from '..';
 import Profile from './Profile';
 export default class Track {
     private _api;
-    id: string;
+    id: number;
     title: string;
     description: string;
     authorUsername: string;
@@ -20,4 +20,5 @@ export default class Track {
         [key: string]: any;
     }, author?: Profile);
     fetchAuthor(): Promise<Profile | null>;
+    fetchLeaderboard(): Promise<any>;
 }

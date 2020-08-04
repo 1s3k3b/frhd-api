@@ -2,6 +2,7 @@ import { FRHD } from '..';
 import Profile from './Profile';
 import Comment from './Comment';
 export default class ScrapedTrack {
+    slug: string;
     private _api;
     authorUsername: string;
     author: Profile | {
@@ -10,6 +11,7 @@ export default class ScrapedTrack {
         avatar: string;
         fetch: () => Promise<Profile>;
     };
+    id: number;
     title: string;
     rating: number;
     votes: string;
@@ -21,6 +23,7 @@ export default class ScrapedTrack {
     completionRate: number;
     size: string;
     comments: Comment[];
-    constructor(api: FRHD, data: string, author?: Profile);
+    constructor(api: FRHD, data: string, slug: string, author?: Profile);
     fetchAuthor(): Promise<Profile>;
+    fetchLeaderboard(): Promise<any>;
 }

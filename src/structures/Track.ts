@@ -1,9 +1,10 @@
+import fetch from 'node-fetch';
 import { FRHD } from '..';
 import Profile from './Profile';
 
 export default class Track {
     private _api!: FRHD;
-    public id: string;
+    public id: number;
     public title: string;
     public description: string;
     public authorUsername: string;
@@ -42,8 +43,19 @@ export default class Track {
                 } as { [key in typeof k]: string })[k], v]),
         ) as { [key in 'star' | 'checkpoint' | 'boost' | 'gravity' | 'slowmo' | 'bomb' | 'heli']: number };
     }
-    async fetchAuthor() {
+    public async fetchAuthor() {
         this.author = this.author || await this._api.fetchProfile(this.authorUsername) || null;
         return this.author;
+    }
+    public fetchLeaderboard() {
+        return fetch('https://www.freeriderhd.com/track_api/load_leaderboard', {
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: `t_id=${this.id}&ajax=true`,
+            method: 'POST',
+        })
+            .then(d => d.json())
+            .then(d => d.track_leaderboard);
     }
 };

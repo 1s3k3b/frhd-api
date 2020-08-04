@@ -25,10 +25,10 @@ export default class PartialTrack {
         this.name = children[1].children[1].children[0].data!;
         this.authorUsername = children[1].children[5].children[0].data!;
     }
-    scrape() {
+    public scrape() {
         return this.author ? this._api.scrapeTrack(this.url, this.author) : this._api.scrapeTrack(this.url);
     }
-    fetch(raw = false) {
+    public fetch(raw = false) {
         return this._api.fetchTrack(this.url, { author: this.author, raw });
     }
     async fetchAuthor() {

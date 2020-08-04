@@ -1,4 +1,5 @@
 import $ from 'cheerio';
+import fetch from 'node-fetch';
 import { FRHD } from '..';
 import Profile from './Profile';
 import Comment from './Comment';
@@ -12,6 +13,7 @@ export default class ScrapedTrack {
         avatar: string;
         fetch: () => Promise<Profile>;
     };
+    public id: number;
     public title: string;
     public rating: number;
     public votes: string;
@@ -23,7 +25,7 @@ export default class ScrapedTrack {
     public completionRate: number;
     public size: string;
     public comments: Comment[];
-    constructor(api: FRHD, data: string, author?: Profile) {
+    constructor(api: FRHD, data: string, public slug: string, author?: Profile) {
         Object.defineProperty(this, '_api', { value: api });
         const scrape = (x: string) => $(x, data);
         const stats = scrape('.stat-container > .num');
@@ -40,6 +42,7 @@ export default class ScrapedTrack {
             };
         }
 
+        this.id = +slug.match(/^\d+/)![0];
         this.title = scrape('.panel-padding > h1')[0].children[0].data!;
         this.rating = parseInt(scrape('#track-vote-percent')[0].children[0].data!);
         this.votes = scrape('#track-votes')[0].children[0].data!;
@@ -52,8 +55,19 @@ export default class ScrapedTrack {
         this.size = stats[3].children[0].data!;
         this.comments = Array.from(scrape('.track-comments-list > .track-comment > .track-comment-wrapper'), d => new Comment(api, d.children));
     }
-    async fetchAuthor() {
+    public async fetchAuthor() {
         this.author = (await this._api.fetchProfile(this.authorUsername)) as Profile;
         return this.author;
+    }
+    public fetchLeaderboard() {
+        return fetch('https://www.freeriderhd.com/track_api/load_leaderboard', {
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: `t_id=${this.id}&ajax=true`,
+            method: 'POST',
+        })
+            .then(d => d.json())
+            .then(d => d.track_leaderboard);
     }
 };

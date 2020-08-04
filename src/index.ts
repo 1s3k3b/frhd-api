@@ -55,14 +55,14 @@ export class FRHD {
 
         const r = await fetch('https://www.freeriderhd.com/t/' + name, {});
         if (!r.ok) throw new FRHDAPIError('NOT_FOUND', 'Track', name);
-        const d = new ScrapedTrack(this, await r.text(), author);
+        const d = new ScrapedTrack(this, await r.text(), name, author);
         this.scrapedTracks?.set(name.toLowerCase(), d);
         return d;
     }
-    public async fetchTrack(id: string, { raw = false, author }: { raw: boolean, author?: Profile } = { raw: false }) {
+    public async fetchTrack(id: string, { raw = false, author }: { raw: boolean, author?: Profile } = { raw: false }): Promise<typeof raw extends true ? any : Track> {
         if (typeof id !== 'string') throw new ArgumentError('INVALID_ARG', 'id', 'string', id);
         id = (id.match(/\d+/) || [])[0];
-        if (this.tracks?.has(id)) return this.tracks.get(id);
+        if (this.tracks?.has(id)) return this.tracks.get(id)!;
 
         const r = await fetch(`http://cdn.freeriderhd.com/free_rider_hd/tracks/prd/${id}/track-data-v1.js`, {});
         if (!r.ok) throw new FRHDAPIError('NOT_FOUND', 'Track', id);

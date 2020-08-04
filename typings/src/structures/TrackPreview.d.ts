@@ -14,6 +14,6 @@ export default class TrackPreview {
     preview: string;
     constructor(api: FRHD, d: CheerioElement);
     scrape(): Promise<import("./ScrapedTrack").default | undefined>;
-    fetch(raw?: boolean): Promise<any>;
+    fetch(raw?: boolean): Promise<import("./Track").default>;
     fetchAuthor(): Promise<Profile | undefined>;
 }

@@ -13,6 +13,6 @@ export default class PartialTrack {
     author?: Profile;
     constructor(api: FRHD, d: CheerioElement);
     scrape(): Promise<import("./ScrapedTrack").default | undefined>;
-    fetch(raw?: boolean): Promise<any>;
+    fetch(raw?: boolean): Promise<import("./Track").default>;
     fetchAuthor(): Promise<Profile | undefined>;
 }

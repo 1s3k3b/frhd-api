@@ -22,7 +22,7 @@ export declare class FRHD {
     fetchTrack(id: string, { raw, author }?: {
         raw: boolean;
         author?: Profile;
-    }): Promise<any>;
+    }): Promise<typeof raw extends true ? any : Track>;
     fetchTrending(page?: number): Promise<TrackPreview[]>;
     fetchFeatured(page?: number): Promise<TrackPreview[]>;
     fetchHot(): Promise<TrackPreview[]>;
