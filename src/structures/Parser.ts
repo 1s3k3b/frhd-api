@@ -1,16 +1,16 @@
-enum Types {
+export enum Types {
     PHYSICS,
     SCENERY,
     POWERUP,
     VEHICLE_POWERUP,
 }
-enum Vehicles {
+export enum Vehicles {
     HELI,
     TRUCK,
     BALLOON,
     BLOB,
 }
-const powerupTypes = {
+export const powerupTypes = {
     'T': 'star',
     'C': 'checkpoint',
     'B': 'boost',
@@ -21,14 +21,14 @@ const powerupTypes = {
     'W': 'teleport',
     'V': 'vehicle',
 };
-interface Element<T extends Types> {
+export interface Element<T extends Types> {
     type: T;
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
     x2?: number;
     y2?: number;
-    powerupTypeRaw: keyof typeof powerupTypes;
-    powerupType: typeof powerupTypes[keyof typeof powerupTypes];
+    powerupTypeRaw?: keyof typeof powerupTypes;
+    powerupType?: typeof powerupTypes[keyof typeof powerupTypes];
     vehicleTypeRaw?: Vehicles;
     vehicleType?: typeof Vehicles[Vehicles];
     deg?: number;

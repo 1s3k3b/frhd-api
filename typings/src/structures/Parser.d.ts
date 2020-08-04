@@ -1,16 +1,16 @@
-declare enum Types {
+export declare enum Types {
     PHYSICS = 0,
     SCENERY = 1,
     POWERUP = 2,
     VEHICLE_POWERUP = 3
 }
-declare enum Vehicles {
+export declare enum Vehicles {
     HELI = 0,
     TRUCK = 1,
     BALLOON = 2,
     BLOB = 3
 }
-declare const powerupTypes: {
+export declare const powerupTypes: {
     T: string;
     C: string;
     B: string;
@@ -21,14 +21,14 @@ declare const powerupTypes: {
     W: string;
     V: string;
 };
-interface Element<T extends Types> {
+export interface Element<T extends Types> {
     type: T;
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
     x2?: number;
     y2?: number;
-    powerupTypeRaw: keyof typeof powerupTypes;
-    powerupType: typeof powerupTypes[keyof typeof powerupTypes];
+    powerupTypeRaw?: keyof typeof powerupTypes;
+    powerupType?: typeof powerupTypes[keyof typeof powerupTypes];
     vehicleTypeRaw?: Vehicles;
     vehicleType?: typeof Vehicles[Vehicles];
     deg?: number;
@@ -57,4 +57,3 @@ export default class Parser {
     private _encodePos;
     private _decodePos;
 }
-export {};

@@ -168,4 +168,5 @@ export class FRHD {
 export { default as Comment } from './structures/Comment';
 export { default as PartialTrack } from './structures/PartialTrack';
 export { Parsed, default as Parser } from './structures/Parser';
+export { default as Builder } from './structures/Builder';
 export { LeaderboardEntry, Profile, ScrapedTrack, Track, TrackPreview };
