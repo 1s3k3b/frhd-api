@@ -1,6 +1,6 @@
 import $ from 'cheerio';
 import fetch from 'node-fetch';
-import { FRHD } from '..';
+import FRHD from '../client/FRHD';
 import Profile from './Profile';
 import Comment from './Comment';
 

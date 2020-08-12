@@ -1,5 +1,5 @@
 import PartialTrack from './PartialTrack';
-import { FRHD } from '..';
+import FRHD from '../client/FRHD';
 export default class Profile {
     username: string;
     subscribers: number;

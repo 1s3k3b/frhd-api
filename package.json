@@ -1,18 +1,25 @@
 {
   "name": "frhd-api",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An FRHD web scraper",
   "main": "./dist/src/index.js",
   "types": "./typings/src/index.d.ts",
-  "files": ["typings", "test", "dist"],
+  "files": [
+    "typings",
+    "test",
+    "dist"
+  ],
   "scripts": {
     "test": "tsc && node dist/test/"
   },
-  "keywords": ["frhd", "api"],
+  "keywords": [
+    "frhd",
+    "api"
+  ],
   "author": "1s3k3b",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/1s3k3b/frhd-api.git" 
+    "url": "git+https://github.com/1s3k3b/frhd-api.git"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
@@ -20,6 +27,7 @@
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.18",
-    "@types/node-fetch": "^2.5.7"
+    "@types/node-fetch": "^2.5.7",
+    "dotenv": "^8.2.0"
   }
 }

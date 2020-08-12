@@ -1,6 +1,6 @@
 import $ from 'cheerio';
 import PartialTrack from './PartialTrack';
-import { FRHD } from '..';
+import FRHD from '../client/FRHD';
 
 export default class Profile {
     public username: string;
