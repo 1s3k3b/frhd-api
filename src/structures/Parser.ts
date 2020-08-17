@@ -157,7 +157,7 @@ export default class Parser {
         const mapLine = <T extends Types>(o: Element<T>) =>
             (o.curve
                 ? o.coords!.map(([x, y]) => this._encodePos(x) + ' ' + this._encodePos(y))
-                : [o.x ?? 0, o.y ?? 0, o.x2 ?? 0, o.y2 ?? 0].map((x, i) => this._encodePos(x))
+                : [o.x ?? 0, o.y ?? 0, o.x2 ?? 0, o.y2 ?? 0].map(x => this._encodePos(x))
             ).join(' ');
         return `${
             physics
@@ -169,7 +169,7 @@ export default class Parser {
                 .join(',')
         }#${
             powerups.map(o =>
-                `${o.powerupTypeRaw} ${this._encodePos(o.x!)} ${this._encodePos(o.y!)}${(x => x ? ' ' + x : '')((o.x2 && this._encodePos(o.x2)) || (o.deg && this._encodePos(o.deg)) || o.vehicleTypeRaw)}${(x => x ? ' ' + x : '')((o.y2 && this._encodePos(o.y2)) || o.duration)}`
+                `${o.powerupTypeRaw} ${this._encodePos(o.x!)} ${this._encodePos(o.y!)}${(x => x ? ' ' + x : '')((!isNaN(+o.x2!) ? this._encodePos(o.x2!) : !isNaN(+o.deg!) ? this._encodePos(o.deg!) : o.vehicleTypeRaw))}${(x => x ? ' ' + x : '')((!isNaN(+o.y2!) ? this._encodePos(o.y2!) : o.duration))}`
             )
         }`;
     }
