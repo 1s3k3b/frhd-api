@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 const interval = (f: () => any, n: number) => f() + setInterval(f, n);
 
 export default class Client extends EventEmitter {
-    constructor(public token: string, notificationInterval = 10000) {
+    constructor(private readonly token: string, notificationInterval = 10000) {
         super();
         let logged = false;
         interval(() => 
@@ -25,6 +25,9 @@ export default class Client extends EventEmitter {
                 }),
             notificationInterval,
         );
+    }
+    public encodeHeader(str: string) {
+        return encodeURIComponent(str).replace(/%20/g, '+');
     }
     public request(path: string, body = '', method = 'POST') {
         return fetch(`https://www.freeriderhd.com${path}`, {
@@ -50,6 +53,21 @@ export default class Client extends EventEmitter {
     public async acceptFriend(username: string) {
         const u = await this.request(`/u/${username}`);
         return this.request('/friends/respond_to_friend_request', `u_id=${u.user.u_id}&action=accept`);
+    }
+    public buyHat() {
+        return this.request('/store/buy');
+    }
+    public updateForum(password: string) {
+        return this.request(`/account/update_forum_account`, `password=${password}`);
+    }
+    public changePassword(oldPass: string, newPass: string) {
+        return this.request('/account/change_password', `old_password=${oldPass}&new_password=${newPass}`);
+    }
+    public changeAbout(str: string) {
+        return this.request('/account/edit_profile', `name=about&value=${this.encodeHeader(str)}`);
+    }
+    public changeName(str: string) {
+        return this.request('/account/edit_profile', `name=u_name&value=${str}`);
     }
     public fetchSelf() {
         return this.request('/').then(d => ({ user: d.user, user_stats: d.user_stats }));

@@ -19,5 +19,9 @@ client
             .fetchSelf()
             .then(console.log)
             .catch(console.error);
+        client
+            .buyHat()
+            .then(console.log)
+            .catch(console.error);
     })
     .on('notification', console.log);
