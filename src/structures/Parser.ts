@@ -96,6 +96,18 @@ export class Parsed {
             .replace(/,$/g, '')
             .replace(/,#/, '#');
     }
+    public curveToStraight(physics = true, scenery = true) {
+        const f = <T extends 0 | 1>(l: Element<T>) =>
+            l.curve
+                ? paginate(l.coords!.flatMap((x, i, a) => i ? [...a[i - 1], ...x] : []), 4)
+                    .map(([x, y, x2, y2]) => <Element<T>><unknown>({ x, y, x2, y2 }))
+                : l;
+        return this.parser.toCode({
+            physics: physics ? this.physics.flatMap(f) : this.physics,
+            scenery: scenery ? this.scenery.flatMap(f) : this.scenery,
+            powerups: this.powerups,
+        });
+    }
 }
 
 export default class Parser {

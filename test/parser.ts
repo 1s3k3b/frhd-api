@@ -12,4 +12,5 @@ const parsed = parser.parse(code);
 console.log(parsed);
 console.log(parsed.move(200, -200), '\n');
 console.log(parsed.merge(code2), '\n');
-console.log(parsed.merge(parser.parse(code2)).code);
+console.log(parsed.merge(parser.parse(code2)).code, '\n');
+console.log(parsed.curveToStraight());

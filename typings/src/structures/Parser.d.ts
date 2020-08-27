@@ -46,6 +46,7 @@ export declare class Parsed {
     move(x?: number, y?: number): string;
     merge(x: string): string;
     merge(x: Parsed): Parsed;
+    curveToStraight(physics?: boolean, scenery?: boolean): string;
 }
 export default class Parser {
     parse(code: string): Parsed;
