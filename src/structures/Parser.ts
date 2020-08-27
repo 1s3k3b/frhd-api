@@ -108,6 +108,41 @@ export class Parsed {
             powerups: this.powerups,
         });
     }
+    public rotate(deg: number) {
+        const theta = deg * Math.PI / 180;
+        const ct = Math.cos(theta);
+        const st = Math.sin(theta);
+        const move = (x: number, y: number) => [ct * x - st * y, ct * y + st * x];
+        const mapLine = <T extends 0 | 1>(l: Element<T>) => {
+            if (l.curve) {
+                l.coords = l.coords!.map(([x, y]) => move(x, y));
+            } else {
+                const [x1, y1] = move(l.x!, l.y!);
+                const [x2, y2] = move(l.x2!, l.y2!);
+                l.x = x1;
+                l.y = y1;
+                l.x2 = x2;
+                l.y2 = y2;
+            }
+            return l;
+        };
+        return this.parser.toCode({
+            physics: this.physics.map(mapLine),
+            scenery: this.scenery.map(mapLine),
+            powerups: this.powerups.map(x => {
+                const [x1, y1] = move(x.x!, x.y!);
+                x.x = x1;
+                x.y = y1;
+                if (!isNaN(x.deg!)) x.deg! += deg;
+                if (!isNaN(x.x2!)) {
+                    const [x2, y2] = move(x.x2!, x.y2!);
+                    x.x2 = x2;
+                    x.y2 = y2;
+                }
+                return x;
+            }),
+        });
+    }
 }
 
 export default class Parser {
