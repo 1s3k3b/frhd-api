@@ -10,7 +10,9 @@ export default class Builder {
     toCode(): string;
     addPhysicsLine(x: number, y: number, x2: number, y2: number): this;
     addSceneryLine(x: number, y: number, x2: number, y2: number): this;
-    rect(type: 0 | 1, x: number, y: number, width: number, height: number): this;
+    rect(type: 0 | 1, x: number, y: number, width: number, height: number, fill?: 0 | 1): this;
+    curve(type: 0 | 1, dX: number, dY: number, w: number, h: number, lineLength: number, deg: number): this;
+    arc(type: 0 | 1, dX: number, dY: number, r: number, lineLength: number, fill?: 0 | 1): this;
     addPhysicsCurve(...coords: number[][]): this;
     addSceneryCurve(...coords: number[][]): this;
     addPowerup(obj: Element<2>): this;
