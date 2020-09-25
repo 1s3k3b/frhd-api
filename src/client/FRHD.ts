@@ -12,6 +12,7 @@ export default class FRHD {
     public profiles?: Map<string, Profile>;
     public scrapedTracks?: Map<string, ScrapedTrack>;
     public tracks?: Map<string, Track>;
+    public rawTracks?: Map<string, Record<string, any>>;
     public trending?: TrackPreview[][];
     public featured?: TrackPreview[][];
     public leaderboard?: Map<'player' | 'author', LeaderboardEntry[][]>;
@@ -26,6 +27,7 @@ export default class FRHD {
             this.profiles = new Map();
             this.scrapedTracks = new Map();
             this.tracks = new Map();
+            this.rawTracks = new Map();
             this.trending = [];
             this.featured = [];
             this.leaderboard = new Map([['player', []], ['author', []]]);
@@ -59,16 +61,18 @@ export default class FRHD {
         this.scrapedTracks?.set(name.toLowerCase(), d);
         return d;
     }
-    public async fetchTrack(id: string, { raw = false, author }: { raw: boolean, author?: Profile } = { raw: false }): Promise<typeof raw extends true ? any : Track> {
+    public async fetchTrack(id: string, { raw = false, author }: { raw: boolean, author?: Profile } = { raw: false }): Promise<typeof raw extends true ? Record<string, any> : Track> {
         if (typeof id !== 'string') throw new ArgumentError('INVALID_ARG', 'id', 'string', id);
         id = (id.match(/\d+/) || [])[0];
-        if (this.tracks?.has(id)) return this.tracks.get(id)!;
+        const cached = this[raw ? 'tracks' : 'rawTracks']?.get(id);
+        if (cached) return <typeof raw extends true ? Record<string, any> : Track>cached;
 
         const r = await fetch(`http://cdn.freeriderhd.com/free_rider_hd/tracks/prd/${id}/track-data-v1.js`, {});
         if (!r.ok) throw new FRHDAPIError('NOT_FOUND', 'Track', id);
         const parsed = JSON.parse((await r.text()).slice(2, -2));
         const d = new Track(this, parsed, author);
         this.tracks?.set(id, d);
+        this.rawTracks?.set(id, parsed);
         return raw ? parsed : d;
     }
     public async fetchTrending(page = 1) {

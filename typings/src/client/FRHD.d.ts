@@ -7,6 +7,7 @@ export default class FRHD {
     profiles?: Map<string, Profile>;
     scrapedTracks?: Map<string, ScrapedTrack>;
     tracks?: Map<string, Track>;
+    rawTracks?: Map<string, Record<string, any>>;
     trending?: TrackPreview[][];
     featured?: TrackPreview[][];
     leaderboard?: Map<'player' | 'author', LeaderboardEntry[][]>;
@@ -22,7 +23,7 @@ export default class FRHD {
     fetchTrack(id: string, { raw, author }?: {
         raw: boolean;
         author?: Profile;
-    }): Promise<typeof raw extends true ? any : Track>;
+    }): Promise<typeof raw extends true ? Record<string, any> : Track>;
     fetchTrending(page?: number): Promise<TrackPreview[]>;
     fetchFeatured(page?: number): Promise<TrackPreview[]>;
     fetchHot(): Promise<TrackPreview[]>;
