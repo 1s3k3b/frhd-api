@@ -64,7 +64,7 @@ export default class FRHD {
     public async fetchTrack(id: string, { raw = false, author }: { raw: boolean, author?: Profile } = { raw: false }): Promise<typeof raw extends true ? Record<string, any> : Track> {
         if (typeof id !== 'string') throw new ArgumentError('INVALID_ARG', 'id', 'string', id);
         id = (id.match(/\d+/) || [])[0];
-        const cached = this[raw ? 'tracks' : 'rawTracks']?.get(id);
+        const cached = this[raw ? 'rawTracks' : 'tracks']?.get(id);
         if (cached) return <typeof raw extends true ? Record<string, any> : Track>cached;
 
         const r = await fetch(`http://cdn.freeriderhd.com/free_rider_hd/tracks/prd/${id}/track-data-v1.js`, {});
